@@ -1,12 +1,14 @@
 import * as dotenv from 'dotenv';
 dotenv.config();
 
-import { buildApp } from '../src/app';
+import { buildApp } from '../src/app.js';
 
-// Initialize the Fastify app
-const app = buildApp();
+let app: any;
 
 export default async function (req: any, res: any) {
+  if (!app) {
+    app = await buildApp();
+  }
   await app.ready();
   app.server.emit('request', req, res);
 }
